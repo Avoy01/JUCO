@@ -293,9 +293,213 @@
 	%% =========================================================================
 	%%  SECTION 2 — RELATED WORK
 	%% =========================================================================
-	
 	\section{Related Work}
 	\label{sec:related_work}
+	
+	This section surveys four bodies of literature that directly
+	motivate and situate the contributions of this paper:
+	missing data in EHR-based clinical prediction, imputation
+	under informative missingness, fuzzy set methods for
+	uncertain data, and selective prediction with abstention.
+	
+	\subsection{Missing Data in ICU Clinical Prediction}
+	\label{sec:rw_missing}
+	
+	Electronic health records contain pervasive missingness by design:
+	clinicians order tests selectively based on patient acuity,
+	meaning the decision to measure a variable is correlated with
+	the variable's value and the patient's
+	outcome~\citep{agniel2018biases}.
+	This produces a Missing-Not-At-Random (MNAR) mechanism in the
+	formal sense of \citet{rubin1976inference}: the probability
+	that an entry is missing depends on the missing value itself,
+	not only on observed data.
+	Standard missing-at-random (MAR) or missing-completely-at-random
+	(MCAR) assumptions that underpin most imputation methods are
+	therefore violated in ICU data, with consequences for both
+	imputation quality and downstream model validity.
+	
+	Benchmark studies on MIMIC-III/IV have demonstrated that gradient
+	boosting methods --- particularly XGBoost and LightGBM --- achieve
+	competitive ICU mortality prediction performance~\citep{johnson2016mimic,johnson2023mimic,
+		purushotham2018benchmarking}, with AUROC values in the range 0.82--0.88.
+	A recent systematic review and meta-analysis of 40 ICU mortality prediction
+	studies confirms gradient boosting as the dominant modality, with a pooled
+	AUROC of 0.83, yet identifies systematic calibration deficits as the primary
+	unresolved limitation across all model classes~\citep{sun2025machinelearning}.
+	Complementary work on myocardial infarction patients using eICU and MIMIC-IV
+	demonstrates that explainable XGBoost frameworks can achieve AUROC values up
+	to 0.92 with time-resolved interpretability across multiple prediction
+	horizons~\citep{mesinovic2025explainable}, while a dynamic LightGBM model
+	updated every 24 hours achieves an internal AUROC of 0.909 with successful
+	external validation on MIMIC-IV~\citep{britsch2025interpretable}.
+	These methods handle missingness implicitly through learned
+	NaN routing: split directions for missing entries are determined
+	during training to minimise loss, effectively treating the absence of a measurement as a
+	learnable feature~\citep{chen2016xgboost}.
+	While this approach is efficient and often effective within a
+	single institution's stable data pipeline~\citep{perezlebel2022benchmarking},
+	it encodes the missingness structure as a proxy variable
+	whose validity depends on the stationarity of the MNAR
+	mechanism~\citep{josse2019consistency,perezlebel2022benchmarking}.
+	When the deployment environment differs from training ---
+	different hospital charting protocols, data pipeline failures,
+	or equipment changes --- the learned NaN routing becomes
+	miscalibrated~\citep{sperrin2020informative}.
+	Our stress test results (XGBoost $\Delta\text{AUROC} = -0.054$
+	at 70\% MNAR vs JUCO $-0.023$) are consistent with this fragility.
+	
+	Reliable external validation of clinical prediction models requires
+	careful attention to study design and statistical power.
+	\citet{riley2024external} demonstrate that most published external
+	validation studies are underpowered to detect clinically meaningful
+	performance degradation, and advocate for setting-specific sample
+	size calculations rather than rules of thumb.
+	We follow this guidance in our eICU validation design, which applies
+	frozen MIMIC-IV parameters to 162,136 stays across 208 hospitals.
+	
+	\subsection{Imputation Methods for Informative Missingness}
+	\label{sec:rw_imputation}
+	
+	Standard imputation approaches for clinical data include mean/median
+	imputation~\citep{sterne2009multiple}, multiple imputation by chained
+	equations (MICE~\citep{van2011mice}), and
+	MissForest~\citep{stekhoven2012missforest}.
+	All of these produce point estimates and discard uncertainty
+	information, leaving the downstream classifier unable to distinguish
+	between confidently imputed and highly uncertain entries.
+	A systematic review of missing-data handling across 46 EHR studies
+	finds that machine learning methods generally outperform statistical
+	approaches, but that no single strategy is universally optimal:
+	MICE-based methods are preferable for cross-sectional data, while
+	KNN and context-aware approaches perform better for longitudinal
+	records~\citep{ren2024moving}.
+	A broader survey of 58 clinical studies on imputation for structured
+	datasets confirms that the choice of method should account for
+	missingness mechanism, pattern, and ratio, rather than being
+	selected by default~\citep{afkanpour2024systematic}.
+	
+	Deep generative approaches address this limitation by modelling
+	the full conditional distribution of missing values.
+	\citet{yoon2018gain} propose GAIN, a GAN-based imputation method.
+	\citet{ipsen2020not} extend variational autoencoders to MNAR data,
+	producing distributional imputations.
+	\citet{ma2020mimic} use recurrent networks with explicit missingness
+	modelling for temporal EHR data.
+	More recently, \citet{zhao2024multitask} propose a multi-task
+	diffusion model for mortality prediction with incomplete data in
+	shock patients.
+	A comprehensive benchmarking study of deep imputation methods
+	across five health time-series datasets finds that no single method
+	dominates, and that deep learning outperforms traditional approaches
+	only when data quality and sample size are sufficiently
+	large~\citep{kazijevs2023deep}.
+	A parallel review comparing GAIN, VAE, MICE, and MissForest under
+	MCAR, MAR, and MNAR conditions on ten tabular datasets concludes
+	that conventional methods are preferable for moderate sample sizes
+	under MNAR, with deep generative methods prone to mode collapse
+	in that setting~\citep{sun2023deeplearning}.
+	These approaches produce richer uncertainty representations, but
+	they do not propagate imputation uncertainty to the classification
+	stage and do not incorporate abstention.
+	
+	The handling of missing data specifically at model deployment time
+	introduces additional challenges beyond those encountered during
+	development. \citet{sisk2023imputation} show via simulation on
+	critical-care data that missing indicators improve predictive
+	performance in many scenarios but can introduce bias under
+	outcome-dependent MNAR mechanisms, motivating principled
+	uncertainty representations such as JUCO's interval-valued
+	imputation over binary missingness flags.
+	
+	Quantile regression provides an efficient alternative for
+	interval-valued imputation~\citep{meinshausen2006quantile}.
+	The key advantage is that prediction interval width directly
+	encodes imputation uncertainty without distributional assumptions.
+	To our knowledge, the present work is the first to use LightGBM
+	quantile regression as an imputation engine whose output intervals
+	are propagated through a downstream soft-routing classifier via a
+	fuzzy transformation.
+	
+	\subsection{Fuzzy Set Methods for Uncertain Clinical Data}
+	\label{sec:rw_fuzzy}
+	
+	Fuzzy set theory~\citep{zadeh1965fuzzy} provides a principled
+	framework for reasoning about imprecise information.
+	Trapezoidal fuzzy numbers have been applied to clinical decision
+	support for representing measurement
+	uncertainty~\citep{adlassnig1986fuzzy, torres2013fuzzy},
+	but these applications use fuzzy representations at the rule level
+	rather than as inputs to a learned classifier.
+	Fuzzy decision trees with soft routing have been studied
+	theoretically~\citep{olaru2003complete, yuan1995induction},
+	but prior work has not addressed joint optimisation of imputation
+	and tree hyperparameters, nor application to large-scale EHR data.
+	\citet{hullermeier2021aleatoric} motivates the distinction between
+	aleatoric and epistemic uncertainty that guides our design choices.
+	
+	More recently, \citet{capitoli2025fuzzy} propose Fuzzy Sets in
+	Probability Trees (FPT), which embed fuzzy membership functions
+	within probabilistic decision trees to preserve nuances lost when
+	crisp thresholds are applied.
+	Applied to thyroid nodule classification and chronic kidney disease
+	progression, FPTs provide interpretable uncertainty-aware clinical
+	decision support that reduces misdiagnosis rates relative to
+	standard decision trees.
+	JUCO extends this principle to large-scale EHR data under MNAR
+	missingness, replacing rule-level fuzzy logic with
+	imputation-interval-driven soft routing jointly optimised
+	end-to-end via Differential Evolution.
+	
+	\subsection{Selective Prediction and Safe Abstention}
+	\label{sec:rw_selective}
+	
+	Selective prediction --- the reject option --- allows a model to
+	withhold predictions for uncertain
+	inputs~\citep{chow1957optimum, bartlett2008classification}.
+	\citet{geifman2017selective} establish risk-coverage guarantees for
+	selective prediction and introduce the AURC metric used in this paper.
+	\citet{franc2023optimal} show that entropy is asymptotically optimal
+	as an abstention criterion under a well-calibrated posterior.
+	
+	In clinical ML, \citet{jones2021selective} demonstrate entropy-based
+	abstention for risk stratification, and \citet{kompa2021second}
+	show AURC improvements across multiple clinical datasets.
+	\citet{leibig2017leveraging} demonstrate that deferring uncertain
+	predictions improves system-level accuracy in diabetic retinopathy
+	screening.
+	More recently, \citet{swaminathan2024selective} show that
+	selective prediction reduces total misclassification cost in
+	structured EHR data extraction tasks, demonstrating broad
+	applicability of abstention in clinical ML pipelines.
+	
+	A growing body of work extends selective prediction to handle
+	distributional shift between training and deployment.
+	\citet{kwon2026conformal} propose a conformal selective prediction
+	framework for clinical triage that combines conformal prediction
+	with cost-aware deferral; on an early sepsis task, selective
+	deferral reduces error by 46.7\% at 80\% coverage even under
+	out-of-distribution temporal shift, a result structurally
+	analogous to JUCO's entropy-driven abstention under MNAR shift.
+	\citet{hasan2023survey} provide a systematic survey of the reject
+	option in neural networks, cataloguing loss functions and
+	post-training strategies for knowledge-aware abstention.
+	
+	The key limitation of all prior clinical selective prediction work
+	is that abstention is based on classification boundary uncertainty ---
+	not on uncertainty in the input features themselves.
+	JUCO addresses this gap: wide imputation intervals produce wide fuzzy
+	trapezoids, reduce split sharpness (Eq.~\ref{eq:sharpness}),
+	produce diffuse leaf distributions, and increase output entropy.
+	The abstention decision is mechanistically linked to imputation
+	quality, not merely to the classification margin.
+	
+	
+	%% =========================================================================
+	%%  SECTION 3 — THEORY / PROBLEM FORMULATION
+	%% =========================================================================
+	\section{Related Works}
+	\label{sec:related_works}
 	
 	This section surveys four bodies of literature that directly
 	motivate and situate the contributions of this paper:

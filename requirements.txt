@@ -1,14 +1,14 @@
-catboost
 duckdb
 lightgbm
 matplotlib
 numba
 numpy
-optuna
 pandas
 pytest
+pytorch-tabnet
 scikit-learn
 scipy
 seaborn
+torch
 tqdm
 xgboost
