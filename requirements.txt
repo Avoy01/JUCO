@@ -1,0 +1,14 @@
+catboost
+duckdb
+lightgbm
+matplotlib
+numba
+numpy
+optuna
+pandas
+pytest
+scikit-learn
+scipy
+seaborn
+tqdm
+xgboost

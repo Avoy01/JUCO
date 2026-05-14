@@ -1,0 +1,9 @@
+* text=auto
+*.tex text eol=lf
+*.bib text eol=lf
+*.py text eol=lf
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.drawio text eol=lf

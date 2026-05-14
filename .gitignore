@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter and local editor state
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Local scratch/duplicate workspace
+New folder/
+
+# LaTeX build outputs
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.abs
+
+# Local datasets and protected clinical data
+mimic-iv/
+eicu/
+*.csv.gz
+*.parquet
+*.feather
+
+# Generated model artifacts, checkpoints, and logs
+*.pkl
+*.joblib
+*.pickle
+*.nbc
+*.nbi
+*.log
+*.tmp
+*checkpoint*
+results/*.pkl
+results/*checkpoint*
+results/*log*.txt
+results/debug_*output*.txt
+results/debug_*err*.txt
+
+# Archives and temporary exports
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.docx
+
+# OS files
+Thumbs.db
+.DS_Store

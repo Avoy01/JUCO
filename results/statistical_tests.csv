@@ -1,0 +1,11 @@
+Dataset,Comparison,Delta_AUROC,95% CI,Wilcoxon_p,Significant
+MIMIC-IV,JUCO vs XGBoost,-0.0281,"[-0.0330, -0.0180]",0.0625,No
+MIMIC-IV,JUCO vs LightGBM,-0.0277,"[-0.0313, -0.0194]",0.0625,No
+MIMIC-IV,JUCO vs MissForest+XGB,-0.0290,"[-0.0342, -0.0238]",0.0625,No
+MIMIC-IV,JUCO vs MeanImp+XGB,-0.0276,"[-0.0343, -0.0180]",0.0625,No
+MIMIC-IV,JUCO vs TabNet (DL),+0.0765,"[+0.0173, +0.2315]",0.0625,No
+eICU,JUCO vs XGBoost,-0.0152,"[-0.0189, -0.0117]",0.0625,No
+eICU,JUCO vs LightGBM,-0.0123,"[-0.0161, -0.0083]",0.0625,No
+eICU,JUCO vs MissForest+XGB,-0.0142,"[-0.0192, -0.0115]",0.0625,No
+eICU,JUCO vs MeanImp+XGB,-0.0149,"[-0.0167, -0.0135]",0.0625,No
+eICU,JUCO vs TabNet (DL),-0.0024,"[-0.0076, +0.0020]",0.3125,No

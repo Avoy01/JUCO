@@ -1,0 +1,232 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.6.1">
+  <diagram id="zqY3eX9F3kPf6sOdMABI" name="Page-1">
+    <mxGraphModel dx="858" dy="491" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1800" pageHeight="1020" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=17;fontStyle=1;fontColor=#1A237E;strokeColor=none;fillColor=none;" value="Figure 3 — JUCO Evaluation Protocol" vertex="1">
+          <mxGeometry height="32" width="1680" x="60" y="12" as="geometry" />
+        </mxCell>
+        <mxCell id="mimic_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=3;arcSize=3;" value="" vertex="1">
+          <mxGeometry height="720" width="1200" x="60" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="mimic_lbl" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#0D47A1;strokeColor=none;fillColor=none;" value="MIMIC-IV  (82,785 ICU stays · 63,687 patients · Beth Israel Deaconess Medical Center · 35 features retained · 10.58% mortality)" vertex="1">
+          <mxGeometry height="26" width="1160" x="80" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="mimic_sub" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#1565C0;strokeColor=none;fillColor=none;" value="Patient-level GroupKFold 5-fold CV  (no patient appears in both train and test)" vertex="1">
+          <mxGeometry height="20" width="1160" x="80" y="88" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=3;arcSize=5;" value="" vertex="1">
+          <mxGeometry height="390" width="210" x="80" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_hd" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#E65100;strokeColor=none;fillColor=none;" value="FOLD 1" vertex="1">
+          <mxGeometry height="24" width="210" x="80" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_de_badge" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E65100;strokeColor=#BF360C;strokeWidth=1.5;fontSize=10;fontColor=#FFFFFF;fontStyle=1;align=center;" value="◆ DE OPTIMISATION" vertex="1">
+          <mxGeometry height="22" width="186" x="92" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_tr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#0D47A1;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;TRAIN&lt;/b&gt;&lt;br&gt;60%&lt;br&gt;~39,736 stays&lt;br&gt;&lt;br&gt;MNAR augment&lt;br&gt;(β=−1.0, 30%)" vertex="1">
+          <mxGeometry height="100" width="186" x="92" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_val" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42A5F5;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;VALIDATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,245 stays&lt;br&gt;&lt;br&gt;DE fitness eval&lt;br&gt;MNAR augment" vertex="1">
+          <mxGeometry height="100" width="186" x="92" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="f1_cal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#0D47A1;fontSize=11;align=center;" value="&lt;b&gt;CALIBRATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,247 stays&lt;br&gt;&lt;br&gt;Isotonic calib.&lt;br&gt;τ* threshold&lt;br&gt;Natural missingness" vertex="1">
+          <mxGeometry height="100" width="186" x="92" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="f2_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;arcSize=5;" value="" vertex="1">
+          <mxGeometry height="390" width="210" x="298" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="f2_hd" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#1565C0;strokeColor=none;fillColor=none;" value="FOLD 2" vertex="1">
+          <mxGeometry height="24" width="210" x="298" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="f2_frozen" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3949AB;strokeWidth=1;fontSize=10;fontColor=#3949AB;fontStyle=2;align=center;" value="θ* applied (frozen)" vertex="1">
+          <mxGeometry height="22" width="186" x="310" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="f2_tr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#0D47A1;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;TRAIN&lt;/b&gt;&lt;br&gt;60%&lt;br&gt;~39,736 stays&lt;br&gt;&lt;br&gt;MNAR augment&lt;br&gt;(β=−1.0, 30%)" vertex="1">
+          <mxGeometry height="100" width="186" x="310" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="f2_val" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42A5F5;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;VALIDATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,245 stays&lt;br&gt;&lt;br&gt;Model selection&lt;br&gt;MNAR augment" vertex="1">
+          <mxGeometry height="100" width="186" x="310" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="f2_cal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#0D47A1;fontSize=11;align=center;" value="&lt;b&gt;CALIBRATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,247 stays&lt;br&gt;&lt;br&gt;Isotonic calib.&lt;br&gt;τ* threshold&lt;br&gt;Natural missingness" vertex="1">
+          <mxGeometry height="100" width="186" x="310" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;arcSize=5;" value="" vertex="1">
+          <mxGeometry height="390" width="210" x="516" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_hd" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#1565C0;strokeColor=none;fillColor=none;" value="FOLD 3" vertex="1">
+          <mxGeometry height="24" width="210" x="516" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_frozen" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3949AB;strokeWidth=1;fontSize=10;fontColor=#3949AB;fontStyle=2;align=center;" value="θ* applied (frozen)" vertex="1">
+          <mxGeometry height="22" width="186" x="528" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_tr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#0D47A1;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;TRAIN&lt;/b&gt;&lt;br&gt;60%&lt;br&gt;~39,736 stays&lt;br&gt;&lt;br&gt;MNAR augment&lt;br&gt;(β=−1.0, 30%)" vertex="1">
+          <mxGeometry height="100" width="186" x="528" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_val" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42A5F5;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;VALIDATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,245 stays&lt;br&gt;&lt;br&gt;Model selection&lt;br&gt;MNAR augment" vertex="1">
+          <mxGeometry height="100" width="186" x="528" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="f3_cal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#0D47A1;fontSize=11;align=center;" value="&lt;b&gt;CALIBRATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,247 stays&lt;br&gt;&lt;br&gt;Isotonic calib.&lt;br&gt;τ* threshold&lt;br&gt;Natural missingness" vertex="1">
+          <mxGeometry height="100" width="186" x="528" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;arcSize=5;" value="" vertex="1">
+          <mxGeometry height="390" width="210" x="734" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_hd" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#1565C0;strokeColor=none;fillColor=none;" value="FOLD 4" vertex="1">
+          <mxGeometry height="24" width="210" x="734" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_frozen" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3949AB;strokeWidth=1;fontSize=10;fontColor=#3949AB;fontStyle=2;align=center;" value="θ* applied (frozen)" vertex="1">
+          <mxGeometry height="22" width="186" x="746" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_tr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#0D47A1;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;TRAIN&lt;/b&gt;&lt;br&gt;60%&lt;br&gt;~39,736 stays&lt;br&gt;&lt;br&gt;MNAR augment&lt;br&gt;(β=−1.0, 30%)" vertex="1">
+          <mxGeometry height="100" width="186" x="746" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_val" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42A5F5;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;VALIDATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,245 stays&lt;br&gt;&lt;br&gt;Model selection&lt;br&gt;MNAR augment" vertex="1">
+          <mxGeometry height="100" width="186" x="746" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_cal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#0D47A1;fontSize=11;align=center;" value="&lt;b&gt;CALIBRATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,247 stays&lt;br&gt;&lt;br&gt;Isotonic calib.&lt;br&gt;τ* threshold&lt;br&gt;Natural missingness" vertex="1">
+          <mxGeometry height="100" width="186" x="746" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="f5_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;arcSize=5;" value="" vertex="1">
+          <mxGeometry height="390" width="210" x="952" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="f5_hd" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#1565C0;strokeColor=none;fillColor=none;" value="FOLD 5" vertex="1">
+          <mxGeometry height="24" width="210" x="952" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="f5_frozen" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3949AB;strokeWidth=1;fontSize=10;fontColor=#3949AB;fontStyle=2;align=center;" value="θ* applied (frozen)" vertex="1">
+          <mxGeometry height="22" width="186" x="964" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="f5_tr" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#0D47A1;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;TRAIN&lt;/b&gt;&lt;br&gt;60%&lt;br&gt;~39,736 stays&lt;br&gt;&lt;br&gt;MNAR augment&lt;br&gt;(β=−1.0, 30%)" vertex="1">
+          <mxGeometry height="100" width="186" x="964" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="f5_val" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42A5F5;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#FFFFFF;fontSize=11;align=center;" value="&lt;b&gt;VALIDATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,245 stays&lt;br&gt;&lt;br&gt;Model selection&lt;br&gt;MNAR augment" vertex="1">
+          <mxGeometry height="100" width="186" x="964" y="294" as="geometry" />
+        </mxCell>
+        <mxCell id="f5_cal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90CAF9;strokeColor=#1565C0;strokeWidth=1.5;fontColor=#0D47A1;fontSize=11;align=center;" value="&lt;b&gt;CALIBRATION&lt;/b&gt;&lt;br&gt;20%&lt;br&gt;~13,247 stays&lt;br&gt;&lt;br&gt;Isotonic calib.&lt;br&gt;τ* threshold&lt;br&gt;Natural missingness" vertex="1">
+          <mxGeometry height="100" width="186" x="964" y="404" as="geometry" />
+        </mxCell>
+        <mxCell id="de_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=2.5;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="200" width="210" x="80" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="de_hd" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=1;fontColor=#E65100;strokeColor=none;fillColor=none;" value="Two-Stage DE" vertex="1">
+          <mxGeometry height="22" width="210" x="80" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="de_body" parent="1" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontColor=#263238;strokeColor=none;fillColor=none;" value="Stage 1:&amp;nbsp;&lt;div&gt;proxy K=20 trees, 2,000 samples,&amp;nbsp;&lt;/div&gt;&lt;div&gt;global search&lt;br&gt;Stage 2:&lt;/div&gt;&lt;div&gt;&amp;nbsp;proxy K=40 trees, 7,000 samples,&amp;nbsp;&lt;/div&gt;&lt;div&gt;seed from S1&lt;br&gt;θ = (α&lt;sub&gt;L&lt;/sub&gt;, α&lt;sub&gt;U&lt;/sub&gt;, η, d&lt;sub&gt;max&lt;/sub&gt;, n&lt;sub&gt;min&lt;/sub&gt;)&lt;br&gt;&lt;br&gt;ℒ(θ) = L&lt;sub&gt;class&lt;/sub&gt; + λ&lt;sub&gt;1&lt;/sub&gt;(=0.2)·MPIW&lt;sub&gt;norm&lt;/sub&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;+ λ&lt;sub&gt;2&lt;/sub&gt;(=2.0)·coverage_gap&lt;br&gt;&lt;br&gt;Pop: 8×5 (S1), 12×5 (S2) · Max iter: 8/12&lt;br&gt;Run &lt;u&gt;once&lt;/u&gt; on Fold 1 only&lt;/div&gt;" vertex="1">
+          <mxGeometry height="162" width="198" x="86" y="546" as="geometry" />
+        </mxCell>
+        <mxCell id="theta_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=3;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="90" width="210" x="80" y="748" as="geometry" />
+        </mxCell>
+        <mxCell id="theta_body" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#E65100;fontStyle=1;strokeColor=none;fillColor=none;" value="&lt;b&gt;θ* FROZEN&lt;/b&gt;&lt;br&gt;α&lt;sub&gt;L&lt;/sub&gt;*=0.0555 · α&lt;sub&gt;U&lt;/sub&gt;*=0.9384 · η*=0.2869&lt;br&gt;d*&lt;sub&gt;max&lt;/sub&gt;=6 · n*&lt;sub&gt;min&lt;/sub&gt;=33&lt;br&gt;Applied to Folds 2–5 and&amp;nbsp;&lt;div&gt;eICU without modification&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="210" x="80" y="748" as="geometry" />
+        </mxCell>
+        <mxCell id="a_f1_de" edge="1" parent="1" source="f1_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#E65100;strokeWidth=2;fontColor=#E65100;fontSize=10;fontStyle=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="de_bg" value="Fold 1 train+val">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a_de_theta" edge="1" parent="1" source="de_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F9A825;strokeWidth=2.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="theta_bg" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a_th_f2" edge="1" parent="1" source="theta_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F9A825;strokeWidth=2;dashed=1;dashPattern=8 4;fontColor=#E65100;fontSize=9;fontStyle=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="f2_bg" value="frozen θ*">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="403" y="793" />
+              <mxPoint x="403" y="870" />
+              <mxPoint x="403" y="870" />
+              <mxPoint x="403" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a_th_f3" edge="1" parent="1" source="theta_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F9A825;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="f3_bg" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="403" y="793" />
+              <mxPoint x="403" y="880" />
+              <mxPoint x="621" y="880" />
+              <mxPoint x="621" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a_th_f4" edge="1" parent="1" source="theta_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F9A825;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="f4_bg" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="403" y="793" />
+              <mxPoint x="403" y="890" />
+              <mxPoint x="839" y="890" />
+              <mxPoint x="839" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a_th_f5" edge="1" parent="1" source="theta_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F9A825;strokeWidth=2;dashed=1;dashPattern=8 4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="f5_bg" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="403" y="793" />
+              <mxPoint x="403" y="900" />
+              <mxPoint x="1057" y="900" />
+              <mxPoint x="1057" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mnar_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#880E4F;strokeWidth=1.5;fontSize=11;align=center;fontColor=#880E4F;" value="&lt;b&gt;MNAR Augmentation&lt;/b&gt; (β=−1.0, target rate 30%)&lt;br&gt;Applied to: TRAIN + VALIDATION only&lt;br&gt;NOT applied to: CALIBRATION, TEST, eICU" vertex="1">
+          <mxGeometry height="60" width="940" x="318" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="metrics_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=1.5;fontSize=11;align=center;fontColor=#0D47A1;" value="Metrics computed per fold: AUROC, AUPRC, ECE, Brier, AURC, Risk@90, DCA net benefit&lt;br&gt;DeLong + Wilcoxon + bootstrap CI across folds" vertex="1">
+          <mxGeometry height="52" width="940" x="318" y="638" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;strokeWidth=3;arcSize=3;" value="" vertex="1">
+          <mxGeometry height="720" width="460" x="1290" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_lbl" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;fontColor=#4A148C;strokeColor=none;fillColor=none;" value="eICU Collaborative Research Database" vertex="1">
+          <mxGeometry height="24" width="440" x="1300" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_sub" parent="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#6A1B9A;strokeColor=none;fillColor=none;" value="162,136 ICU stays · 121,567 patients · 208 US hospitals · 5.32% mortality · external validation" vertex="1">
+          <mxGeometry height="20" width="440" x="1300" y="86" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_no_train" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;strokeWidth=1.5;fontSize=12;align=center;fontColor=#4A148C;" value="&lt;b&gt;No re-training&lt;/b&gt;&lt;br&gt;No re-optimisation&lt;br&gt;No hyperparameter tuning" vertex="1">
+          <mxGeometry height="70" width="420" x="1310" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_theta" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth:2;fontSize=12;align=center;fontColor=#E65100;fontStyle=1;" value="θ* from MIMIC-IV Fold 1 applied directly&lt;br&gt;α&lt;sub&gt;L&lt;/sub&gt;*=0.0555 · α&lt;sub&gt;U&lt;/sub&gt;*=0.9384 · η*=0.2869 · d*&lt;sub&gt;max&lt;/sub&gt;=6 · n*&lt;sub&gt;min&lt;/sub&gt;=33" vertex="1">
+          <mxGeometry height="56" width="420" x="1310" y="206" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_miss" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#880E4F;strokeWidth=1.5;fontSize=12;align=center;fontColor=#880E4F;" value="Natural missingness retained&lt;br&gt;(no MNAR augmentation applied)" vertex="1">
+          <mxGeometry height="56" width="420" x="1310" y="278" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_steps" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7F6;strokeColor=#6A1B9A;strokeWidth=1.5;fontSize=11;align=left;spacingLeft=10;fontColor=#4A148C;" value="Pipeline:&lt;br&gt;1. Phase 1: Quantile imputation with frozen α&lt;sub&gt;L&lt;/sub&gt;*, α&lt;sub&gt;U&lt;/sub&gt;*&lt;br&gt;2. Phase 2: Fuzzy transform with frozen η*&lt;br&gt;3. Phase 3: Forest with frozen d*&lt;sub&gt;max&lt;/sub&gt;, n*&lt;sub&gt;min&lt;/sub&gt;&lt;br&gt;4. Phase 4: Abstention at same τ* from Fold 1 cal." vertex="1">
+          <mxGeometry height="110" width="420" x="1310" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_purpose" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;strokeWidth=1.5;fontSize=11;align=center;fontColor=#4A148C;" value="Purpose: Test cross-institutional generalisation&lt;br&gt;Does AUROC gap narrow under distribution shift?&lt;br&gt;MIMIC-IV gap: −0.028  →  eICU gap: −0.015&lt;br&gt;(46% reduction)" vertex="1">
+          <mxGeometry height="90" width="420" x="1310" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="eicu_metrics" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;strokeWidth=1.5;fontSize=11;align=center;fontColor=#4A148C;" value="Same metrics: AUROC, ECE, Brier, AURC, DCA&lt;br&gt;5-fold results reported as mean ± SD" vertex="1">
+          <mxGeometry height="52" width="420" x="1310" y="582" as="geometry" />
+        </mxCell>
+        <mxCell id="a_theta_eicu" edge="1" parent="1" source="theta_bg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#F9A825;strokeWidth=3;dashed=1;dashPattern=10 5;fontColor=#E65100;fontStyle=1;fontSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="eicu_theta" value="θ* transferred">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="793" />
+              <mxPoint x="1270" y="234" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg_bg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#90A4AE;strokeWidth=1.5;arcSize=6;" value="" vertex="1">
+          <mxGeometry height="60" width="940" x="318" y="706" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_tr" parent="1" style="text;html=1;align=center;fontSize=11;fontColor=#1565C0;fontStyle=1;strokeColor=none;fillColor=none;" value="■ TRAIN (dark blue)" vertex="1">
+          <mxGeometry height="20" width="180" x="320" y="716" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_val" parent="1" style="text;html=1;align=center;fontSize=11;fontColor=#42A5F5;fontStyle=1;strokeColor=none;fillColor=none;" value="■ VALIDATION (mid blue)" vertex="1">
+          <mxGeometry height="20" width="200" x="500" y="716" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_cal" parent="1" style="text;html=1;align=center;fontSize=11;fontColor=#1565C0;fontStyle=1;strokeColor=none;fillColor=none;" value="■ CALIBRATION (light blue)" vertex="1">
+          <mxGeometry height="20" width="220" x="700" y="716" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_de" parent="1" style="text;html=1;align=center;fontSize=11;fontColor=#E65100;fontStyle=1;strokeColor=none;fillColor=none;" value="◆ DE fold (yellow border = Fold 1)" vertex="1">
+          <mxGeometry height="20" width="260" x="320" y="738" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_frozen" parent="1" style="text;html=1;align=center;fontSize=11;fontColor=#F9A825;fontStyle=1;strokeColor=none;fillColor=none;" value="-- dashed arrow = frozen θ* transfer" vertex="1">
+          <mxGeometry height="20" width="280" x="580" y="738" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
