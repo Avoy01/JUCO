@@ -1,12 +1,10 @@
 # JUCO Mini Project
 
 JUCO is a Joint Uncertainty-Calibrated Optimization framework for ICU mortality
-prediction under informative missingness. The project combines a LaTeX
-manuscript, clinical data loaders, modelling code, robustness experiments, and
-publication figure generation.
+prediction under informative missingness. The project combines clinical data loaders, modelling code, robustness experiments, and publication figure generation.
 
 The pipeline is designed for MIMIC-IV and eICU data. Raw clinical datasets are
-not included in this repository and should not be pushed to GitHub.
+not included in this repository.
 
 ## What JUCO Does
 
