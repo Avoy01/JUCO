@@ -14,7 +14,7 @@ fp = ckpt.get("frozen_params", {})
 params = fp.get("MIMIC-IV", fp)   # handle both nesting styles
 
 print("\n╔══════════════════════════════════════════════════════════╗")
-print("║  DE-Optimised Parameters θ*  (paste into Table A.2)     ║")
+print("║  DE-Optimised Parameters θ*                             ║")
 print("╠══════════════════════════════════════════════════════════╣")
 keys = ["alpha_L", "alpha_U", "eta", "max_depth", "min_leaf_samples"]
 labels = {
@@ -32,5 +32,5 @@ for k in keys:
         print(f"║  {labels[k]} : {v}              ║")
 print("╚══════════════════════════════════════════════════════════╝\n")
 
-print("→ Compare with the DE-parameters appendix table of the manuscript (label: tab:de_params)")
+print("→ These are the frozen parameters reused for eICU and the robustness runs")
 print("  Replace each [PLACEHOLDER] with the value above.\n")

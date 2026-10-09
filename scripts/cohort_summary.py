@@ -1,5 +1,5 @@
 ﻿"""
-Print cohort statistics for Table A.3 from both eICU and MIMIC-IV.
+Print cohort statistics from both eICU and MIMIC-IV.
 
 eICU search locations:
 1) EICU_PATH env var (if set)
@@ -90,7 +90,7 @@ def resolve_mimic_files(project_root: Path) -> dict[str, Path]:
 
 
 def _print_summary(dataset_name: str, data_source: str, cohort: pd.DataFrame, male_label: str) -> None:
-    print(f"\n=== {dataset_name} Cohort Statistics for Table A.3 ===")
+    print(f"\n=== {dataset_name} Cohort Statistics ===")
     print(f"Data source: {data_source}")
     print(f"Total stays: {len(cohort):,}")
 
@@ -170,7 +170,7 @@ def main() -> None:
     project_root = Path(__file__).resolve().parent.parent
     summarize_eicu(project_root)
     summarize_mimic(project_root)
-    print("\nPaste these numbers into the cohort-characteristics appendix table of the manuscript.")
+    print("\nCohort characteristics for both datasets (see the paper for how they are reported).")
 
 
 if __name__ == "__main__":

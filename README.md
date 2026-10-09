@@ -1,6 +1,6 @@
 # JUCO: Joint Uncertainty-Calibrated Optimisation for ICU Mortality Prediction
 
-Code accompanying the manuscript *"JUCO: A Joint Uncertainty-Calibrated Optimisation Framework for ICU Mortality Prediction with Safe Abstention Under Informative Missingness"* (Chowdhury, Kumari, Tripathi; under review).
+Code accompanying the paper *"JUCO: A Joint Uncertainty-Calibrated Optimisation Framework for ICU Mortality Prediction with Safe Abstention Under Informative Missingness"* (Chowdhury, Kumari, Tripathi).
 
 JUCO predicts in-hospital mortality from the first 24 hours of an ICU stay and is built for the case where missingness itself is informative (MNAR). It has four parts, all implemented in `juco_core.py`:
 
@@ -32,13 +32,13 @@ JUCO_Part1B_Robustness.py    JUCO-XGB, MNAR stress test, decision-curve inputs
 JUCO_Part2_eICU.py           eICU external validation with frozen θ*
 JUCO_Part3_Aggregate.py      post-processing: aggregate tables, Wilcoxon / Friedman tests, summary plots
 scripts/
-  make_paper_outputs.py      regenerates manuscript Figures 3, 4, 5, D1 and the paper tables from saved predictions
-  cohort_summary.py          cohort characteristics tables (appendix)
+  make_paper_outputs.py      regenerates the result figures (stress test, risk-coverage, decision curves, reliability) and tables from saved predictions
+  cohort_summary.py          cohort characteristics tables (cohort characteristics)
   extract_theta_star.py      prints the frozen θ* from the MIMIC-IV checkpoint
   debug_cohort.py            loads both datasets and prints cohort statistics (no training)
   inspect_files.py           checks that the raw PhysioNet files are in place
-figures/                     publication figures (Figure_1, Figure_2: architecture diagrams; Figures 3, 4, 5, D1: results)
-results/                     small result CSVs from the pipeline; paper_tables/ holds the tables behind the manuscript
+figures/                     architecture_overview, method_pipeline (diagrams); mnar_stress_test, risk_coverage, decision_curves, reliability (results)
+results/                     small result CSVs from the pipeline; paper_tables/ holds the tables behind the paper
 ```
 
 Large artefacts (`*.pkl` checkpoints and predictions) and raw data are not tracked.
@@ -82,11 +82,11 @@ python JUCO_Part1_MIMIC.py            # MIMIC-IV: DE search on fold 1, 5-fold ev
 python JUCO_Part1B_Robustness.py      # JUCO-XGB, MNAR stress test 10-70%, DCA (reuses frozen θ*)
 python JUCO_Part2_eICU.py             # eICU: θ* frozen, every model refit per fold (resumable)
 python JUCO_Part3_Aggregate.py        # aggregate tables and tests
-python scripts/make_paper_outputs.py  # manuscript figures and tables from out-of-fold predictions
-python scripts/cohort_summary.py      # appendix cohort tables
+python scripts/make_paper_outputs.py  # result figures and tables from out-of-fold predictions
+python scripts/cohort_summary.py      # cohort tables
 ```
 
-Protocol, as in the paper: patient-level non-stratified GroupKFold with 5 folds; within each training fold, 60/20/20 train/validation/calibration; 35 features chosen by mutual information per fold; imputers, feature selection, isotonic calibration and τ are refit in every fold; on eICU only θ\* is carried over from MIMIC-IV. The extra MNAR mask is applied to training and validation splits only, never to test data. Pooled-prediction DeLong tests use Bonferroni correction (α = 0.01 on MIMIC-IV, 0.0083 on eICU); fold-level Wilcoxon tests with five folds cannot go below p = 0.0625.
+Protocol: patient-level non-stratified GroupKFold with 5 folds; within each training fold, 60/20/20 train/validation/calibration; 35 features chosen by mutual information per fold; imputers, feature selection, isotonic calibration and τ are refit in every fold; on eICU only θ\* is carried over from MIMIC-IV. The extra MNAR mask is applied to training and validation splits only, never to test data. Pooled-prediction DeLong tests use Bonferroni correction (α = 0.01 on MIMIC-IV, 0.0083 on eICU); fold-level Wilcoxon tests with five folds cannot go below p = 0.0625.
 
 `scripts/make_paper_outputs.py` takes optional arguments `[results_dir] [figures_dir]`. It needs `results/predictions_MIMIC_IV.pkl`, `results/predictions_eICU.pkl` and `results/stress_results_incremental.csv`.
 
@@ -98,7 +98,7 @@ Protocol, as in the paper: patient-level non-stratified GroupKFold with 5 folds;
 
 ## Citation
 
-If you use this code, please cite the manuscript (see `CITATION.cff`). The paper's status will be updated here once a DOI exists.
+If you use this code, please cite the paper (see `CITATION.cff`). The reference will be updated here once it is published.
 
 ## Licence
 
