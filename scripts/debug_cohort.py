@@ -3,6 +3,8 @@ Debug script: load both datasets via the same pipeline as Part1 / Part2,
 then print full cohort statistics (no training, no CV — stops after
 preprocess_dataset so it runs in seconds once data is loaded).
 """
+import sys, pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 import numpy as np
 
 from juco_core import (

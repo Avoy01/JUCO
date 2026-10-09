@@ -32,5 +32,5 @@ for k in keys:
         print(f"║  {labels[k]} : {v}              ║")
 print("╚══════════════════════════════════════════════════════════╝\n")
 
-print("→ In juco_main.tex, find Table A.2 (label: tab:de_params)")
+print("→ Compare with the DE-parameters appendix table of the manuscript (label: tab:de_params)")
 print("  Replace each [PLACEHOLDER] with the value above.\n")
