@@ -1,11 +1,11 @@
-"""Regenerate the paper's figures and tables from the saved out-of-fold predictions.
+"""Regenerate the result figures and tables from the saved out-of-fold predictions.
 
 Inputs (produced by the pipeline scripts, not tracked in Git):
     results/predictions_MIMIC_IV.pkl, results/predictions_eICU.pkl   (Part 1 / Part 2)
     results/stress_results_incremental.csv                           (Part 1B)
 Outputs:
-    figures/Figure_3.pdf (MNAR stress test)   figures/Figure_4.pdf (risk-coverage)
-    figures/Figure_5.pdf (decision curves)    figures/Figure_D1.pdf (reliability)
+    figures/mnar_stress_test.pdf (MNAR stress test)   figures/risk_coverage.pdf (risk-coverage)
+    figures/decision_curves.pdf (decision curves)    figures/reliability.pdf (reliability)
     results/paper_tables/*.csv  (main metrics, DeLong/Wilcoxon tests, operating-point metrics, 5-fold DCA)
 Usage:  python scripts/make_paper_outputs.py [results_dir] [figures_dir]
 """
@@ -48,7 +48,7 @@ for ax,ds in zip(axs,D):
     ax.set_xlabel('Coverage'); ax.set_ylabel('Selective risk (error on retained cases)'); ax.set_xlim(.05,1.0); ax.set_ylim(0,err*1.25)
     ax.grid(alpha=.3,ls=':'); ax.set_title(ds,fontsize=10)
 axs[0].legend(fontsize=8,loc='upper left',frameon=False)
-plt.tight_layout(); plt.savefig(O_FIG+'Figure_4.pdf'); plt.savefig(O_FIG+'Figure_4.png',dpi=200); plt.close()
+plt.tight_layout(); plt.savefig(O_FIG+'risk_coverage.pdf'); plt.savefig(O_FIG+'risk_coverage.png',dpi=200); plt.close()
 # ---- DCA all 5 folds
 th=np.round(np.arange(0.01,0.50,0.01),2); dm=['JUCO','JUCO-XGB','XGBoost','LightGBM','MissForest+XGB']
 res={}
@@ -72,7 +72,7 @@ for ax,ds in zip(axs,D):
     ax.axhline(0,color='#bbb',lw=1,label='Treat None'); ax.set_ylim(-.02,df.JUCO.max()*1.25); ax.set_xlim(.01,.49)
     ax.set_xlabel('Threshold probability'); ax.set_ylabel('Net benefit'); ax.grid(alpha=.3,ls=':'); ax.set_title(ds,fontsize=10)
 axs[0].legend(fontsize=8,frameon=False)
-plt.tight_layout(); plt.savefig(O_FIG+'Figure_5.pdf'); plt.savefig(O_FIG+'Figure_5.png',dpi=200); plt.close()
+plt.tight_layout(); plt.savefig(O_FIG+'decision_curves.pdf'); plt.savefig(O_FIG+'decision_curves.png',dpi=200); plt.close()
 # ---- metrics table
 def st(P,y,t):
     pr=P[:,1]>=t;tp=(pr&(y==1)).sum();fp=(pr&(y==0)).sum();fn=((~pr)&(y==1)).sum();tn=((~pr)&(y==0)).sum()
@@ -120,7 +120,7 @@ for r,(ds,fn) in enumerate([('MIMIC-IV','predictions_MIMIC_IV.pkl'),('eICU','pre
         if r==1: ax.set_xlabel('Mean predicted confidence')
         ax.set_xlim(.5,1.0);ax.set_ylim(.3,1.0);ax.grid(alpha=.3,ls=':')
         print(ds,m,round(e,4))
-plt.tight_layout();plt.savefig(O_FIG+'Figure_D1.pdf');plt.savefig(O_FIG+'Figure_D1.png',dpi=200)
+plt.tight_layout();plt.savefig(O_FIG+'reliability.pdf');plt.savefig(O_FIG+'reliability.png',dpi=200)
 
 # ======================================================================
 # MNAR stress test (Fig. 3)
@@ -138,7 +138,7 @@ for m,c in C.items():
     print(m,round(g['mean'].iloc[-1]-g['mean'].iloc[0],4))
 ax.set_xlabel('Additional MNAR masking rate in training data (%)');ax.set_ylabel('AUROC (MIMIC-IV, unmasked test data)')
 ax.grid(alpha=.3,ls=':');ax.legend(fontsize=8,frameon=False,ncol=2,loc='lower left')
-plt.tight_layout();plt.savefig(O_FIG+'Figure_3.pdf');plt.savefig(O_FIG+'Figure_3.png',dpi=200)
+plt.tight_layout();plt.savefig(O_FIG+'mnar_stress_test.pdf');plt.savefig(O_FIG+'mnar_stress_test.png',dpi=200)
 
 # ======================================================================
 # Main metrics table

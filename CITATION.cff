@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite the associated manuscript."
+message: "If you use this software, please cite the associated paper."
 title: "JUCO: Joint Uncertainty-Calibrated Optimisation for ICU Mortality Prediction with Safe Abstention Under Informative Missingness"
 type: software
 authors:
