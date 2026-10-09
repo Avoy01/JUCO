@@ -1,357 +1,105 @@
-# JUCO Mini Project
+# JUCO: Joint Uncertainty-Calibrated Optimisation for ICU Mortality Prediction
 
-JUCO is a Joint Uncertainty-Calibrated Optimization framework for ICU mortality
-prediction under informative missingness. The project combines clinical data loaders, modelling code, robustness experiments, and publication figure generation.
+Code accompanying the manuscript *"JUCO: A Joint Uncertainty-Calibrated Optimisation Framework for ICU Mortality Prediction with Safe Abstention Under Informative Missingness"* (Chowdhury, Kumari, Tripathi; under review).
 
-The pipeline is designed for MIMIC-IV and eICU data. Raw clinical datasets are
-not included in this repository.
+JUCO predicts in-hospital mortality from the first 24 hours of an ICU stay and is built for the case where missingness itself is informative (MNAR). It has four parts, all implemented in `juco_core.py`:
 
-## What JUCO Does
+1. **Adaptive quantile imputation**: LightGBM quantile regressors give a lower and an upper bound for each missing value instead of a point estimate.
+2. **Proportional fuzzy transformation**: each interval becomes a trapezoidal fuzzy number, so wider intervals carry more uncertainty.
+3. **Fuzzy decision forest with joint optimisation**: a 180-tree soft-routing forest, with the uncertainty and forest hyper-parameters θ = (α_L, α_U, η, d_max, n_min) tuned jointly by two-stage Differential Evolution.
+4. **Safe abstention**: cases whose predictive entropy exceeds a per-fold threshold τ are deferred to a clinician. Quality is reported with AURC and Risk@90 on the full entropy-ranked risk-coverage curve.
 
-The core implementation is in `juco_core.py`. It implements a four-phase
-clinical prediction pipeline:
+Frozen θ\* from the MIMIC-IV Fold 1 search: α_L = 0.0555, α_U = 0.9384, η = 0.2869, d_max = 6, n_min = 33. `scripts/extract_theta_star.py` reads it from the checkpoint.
 
-1. Adaptive Quantile Imputation
-   Missing values are imputed as lower/upper quantile intervals rather than
-   single point estimates.
+## Headline results (5-fold patient-level GroupKFold, mean over folds)
 
-2. Proportional Fuzzy Transformation
-   Imputed intervals are converted into trapezoidal fuzzy numbers so wider
-   intervals carry more uncertainty.
+| Dataset | Model | AUROC | ECE | AURC |
+|---|---|---|---|---|
+| MIMIC-IV (82,785 stays, 10.58% mortality) | JUCO | 0.8141 | 0.0057 | 0.0337 |
+| | XGBoost | 0.8421 | 0.0072 | 0.0285 |
+| | MissForest+XGB | 0.8431 | 0.0062 | 0.0282 |
+| eICU (162,136 stays, 5.32% mortality; θ\* frozen) | JUCO | 0.8191 | 0.0029 | 0.0161 |
+| | XGBoost | 0.8343 | 0.0030 | 0.0152 |
 
-3. Fuzzy Decision Forest with Differential Evolution
-   A fuzzy forest is trained on the transformed features. Important
-   hyperparameters are optimized with a two-stage Differential Evolution search.
+JUCO does not win on raw discrimination. Its case rests on calibration and on robustness: when the training-time MNAR masking rate rises from 10% to 70%, JUCO's AUROC falls by 0.023, against 0.054 for XGBoost and 0.056 for MissForest+XGB. The full tables are in `results/paper_tables/`.
 
-4. Safe Abstention Protocol
-   High-uncertainty cases can be deferred using entropy-based selective
-   prediction. Results include risk-coverage metrics such as AURC and Risk@90.
-
-The main task is in-hospital ICU mortality prediction using the first 24 hours
-of each ICU stay.
-
-## Repository Structure
+## Repository layout
 
 ```text
-.
-|-- juco_core.py                  # Shared data loading, models, metrics, checkpoints
-|-- JUCO_Part1_MIMIC.py           # MIMIC-IV primary experiment and ablation study
-|-- JUCO_Part1B_Robustness.py     # MIMIC-IV robustness, JUCO-XGB, and DCA experiments
-|-- JUCO_Part2_eICU.py            # eICU external validation using frozen MIMIC-IV params
-|-- JUCO_Part3_Aggregate.py       # Post-processing tables, statistics, and figures
-|-- generate_figures.py           # Standalone paper figure generator
-|-- inspect_files.py              # Checks whether required CSV/CSV.GZ files are present
-|-- debug_cohort.py               # Loads both datasets and prints cohort statistics
-|-- juco_main.tex                 # Main manuscript
-|-- references.bib                # Bibliography
-|-- cas-*.cls/.sty/.bst           # Elsevier CAS LaTeX template files
-|-- Figure*.pdf, fig.pdf          # Manuscript figures
-|-- *.drawio                      # Editable diagrams
-|-- results/                      # Small CSV/PDF/PNG result summaries tracked in Git
-|-- mimic-iv/                     # Local raw MIMIC-IV data, ignored by Git
-|-- eicu/                         # Local raw eICU data, ignored by Git
-`-- .venv/                        # Local Python environment, ignored by Git
+juco_core.py                 data loaders, imputer, fuzzy forest, DE optimiser, abstention, baselines, metrics
+JUCO_Part1_MIMIC.py          MIMIC-IV primary experiment (DE on fold 1, 5-fold evaluation) and ablations
+JUCO_Part1B_Robustness.py    JUCO-XGB, MNAR stress test, decision-curve inputs
+JUCO_Part2_eICU.py           eICU external validation with frozen θ*
+JUCO_Part3_Aggregate.py      post-processing: aggregate tables, Wilcoxon / Friedman tests, summary plots
+scripts/
+  make_paper_outputs.py      regenerates manuscript Figures 3, 4, 5, D1 and the paper tables from saved predictions
+  cohort_summary.py          cohort characteristics tables (appendix)
+  extract_theta_star.py      prints the frozen θ* from the MIMIC-IV checkpoint
+  debug_cohort.py            loads both datasets and prints cohort statistics (no training)
+  inspect_files.py           checks that the raw PhysioNet files are in place
+figures/                     publication figures (Figure_1, Figure_2: architecture diagrams; Figures 3, 4, 5, D1: results)
+results/                     small result CSVs from the pipeline; paper_tables/ holds the tables behind the manuscript
 ```
 
-## Data Requirements
+Large artefacts (`*.pkl` checkpoints and predictions) and raw data are not tracked.
 
-You need credentialed access to the following datasets:
+## Data
 
-- MIMIC-IV v2.2 from PhysioNet
-- eICU Collaborative Research Database v2.0 from PhysioNet
+Both datasets need credentialed PhysioNet access and are not redistributed here:
 
-Place the files in this layout:
+- MIMIC-IV v2.2: https://physionet.org/content/mimiciv/2.2/
+- eICU Collaborative Research Database v2.0: https://physionet.org/content/eicu-crd/2.0/
+
+Layout expected under the repository root:
 
 ```text
-mimic-iv/
-|-- hosp/
-|   |-- admissions.csv.gz
-|   |-- patients.csv.gz
-|   `-- labevents.csv.gz
-`-- icu/
-    |-- icustays.csv.gz
-    `-- chartevents.csv.gz
-
-eicu/
-|-- patient.csv.gz
-|-- lab.csv.gz
-`-- vitalPeriodic.csv.gz
+mimic-iv/hosp/{admissions,patients,labevents}.csv.gz
+mimic-iv/icu/{icustays,chartevents}.csv.gz
+eicu/{patient,lab,vitalPeriodic}.csv.gz
 ```
 
-The loaders expect compressed `.csv.gz` files. MIMIC-IV is read partly with
-DuckDB streaming, so the very large `chartevents` and `labevents` files do not
-need to be manually extracted.
+Run `python scripts/inspect_files.py` to confirm the files are found. The PhysioNet data use agreement forbids redistributing patient-level data, so the saved prediction files (`predictions_*.pkl`) are also kept out of the repository.
 
-To verify that the files are in the right place, run:
+## Setup
 
-```powershell
-python inspect_files.py
-```
+Python 3.10 or newer.
 
-This prints the detected path, file size, columns, and one sample row for each
-required table.
-
-## Installation
-
-Use Python 3.10 or newer. The code was prepared on Windows/PowerShell, but the
-same commands work on Linux/macOS with the activation command adjusted.
-
-```powershell
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
+source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-The TabNet baseline is optional in the code. If `pytorch_tabnet` is missing, the
-script prints a warning and disables that baseline. Installing from
-`requirements.txt` includes it so the full baseline set can run.
+TabNet (`pytorch-tabnet`, `torch`) is optional; without it the TabNet baseline is skipped with a warning. The full pipeline was run on a 32-vCPU, 128 GB machine. For a smoke test, lower `cfg.n_trees`, the `cfg.de_*` population and iteration settings, the worker counts, and set `cfg.run_folds = 1` in the script you run.
 
-## Hardware Notes
+## Reproducing the paper
 
-The default settings are intended for a large machine. The comments in
-`JUCO_Part1_MIMIC.py` mention a 32-vCPU / 128 GB RAM GCP instance.
+Run from the repository root, in this order. Each step reads the checkpoints written by the earlier ones.
 
-Important knobs:
-
-- `cfg.forest_workers`: parallel workers for fuzzy forest training.
-- `cfg.de_workers`: parallel Differential Evolution evaluations.
-- `cfg.n_trees`: final forest size.
-- `cfg.run_folds`: set to `0` for all folds, or a small number for testing.
-- `cfg.max_features`: mutual-information feature cap per fold.
-
-For a quick local smoke test, temporarily reduce these values inside the script
-you are running:
-
-```python
-cfg.n_trees = 20
-cfg.de_s1_maxiter = 1
-cfg.de_s1_popsize = 2
-cfg.de_s2_maxiter = 1
-cfg.de_s2_popsize = 2
-cfg.forest_workers = 2
-cfg.de_workers = 2
-cfg.run_folds = 1
+```bash
+python scripts/debug_cohort.py        # optional: cohort sizes, mortality, feature counts
+python JUCO_Part1_MIMIC.py            # MIMIC-IV: DE search on fold 1, 5-fold evaluation, ablations
+python JUCO_Part1B_Robustness.py      # JUCO-XGB, MNAR stress test 10-70%, DCA (reuses frozen θ*)
+python JUCO_Part2_eICU.py             # eICU: θ* frozen, every model refit per fold (resumable)
+python JUCO_Part3_Aggregate.py        # aggregate tables and tests
+python scripts/make_paper_outputs.py  # manuscript figures and tables from out-of-fold predictions
+python scripts/cohort_summary.py      # appendix cohort tables
 ```
 
-Use the default settings again for final reported experiments.
+Protocol, as in the paper: patient-level non-stratified GroupKFold with 5 folds; within each training fold, 60/20/20 train/validation/calibration; 35 features chosen by mutual information per fold; imputers, feature selection, isotonic calibration and τ are refit in every fold; on eICU only θ\* is carried over from MIMIC-IV. The extra MNAR mask is applied to training and validation splits only, never to test data. Pooled-prediction DeLong tests use Bonferroni correction (α = 0.01 on MIMIC-IV, 0.0083 on eICU); fold-level Wilcoxon tests with five folds cannot go below p = 0.0625.
 
-## Recommended Run Order
+`scripts/make_paper_outputs.py` takes optional arguments `[results_dir] [figures_dir]`. It needs `results/predictions_MIMIC_IV.pkl`, `results/predictions_eICU.pkl` and `results/stress_results_incremental.csv`.
 
-Run the scripts from the repository root.
+## Notes and known limits
 
-### 1. Check Dataset Cohorts
+- The seeds are fixed, but LightGBM, XGBoost and the parallel DE search can differ slightly across hardware and library versions, so re-runs may not reproduce the last decimal.
+- On eICU the τ rule never binds, so no cases are deferred there; the abstention curves are still reported.
+- The MIMIC-IV deferral rate at τ\* is not saved in the released outputs.
 
-This step loads and preprocesses both datasets, then prints cohort size,
-mortality rate, feature count, and fold sizes. It does not train models.
+## Citation
 
-```powershell
-python debug_cohort.py
-```
+If you use this code, please cite the manuscript (see `CITATION.cff`). The paper's status will be updated here once a DOI exists.
 
-Expected paths:
+## Licence
 
-- MIMIC-IV: `./mimic-iv/`
-- eICU: `./eicu/`
-- Outputs: printed to terminal only
-
-### 2. Run MIMIC-IV Primary Experiment
-
-```powershell
-python JUCO_Part1_MIMIC.py
-```
-
-This script performs:
-
-- MIMIC-IV loading and first-24-hour feature engineering
-- patient-level `GroupKFold` preprocessing
-- two-stage Differential Evolution on fold 1
-- 5-fold evaluation with frozen optimized parameters
-- JUCO, JUCO-XGB, XGBoost, LightGBM, MissForest+XGB, MeanImp+XGB, and optional
-  TabNet baselines
-- a two-fold ablation study
-
-Main outputs in `results/`:
-
-- `checkpoint_mimic.pkl`
-- `results_MIMIC_IV.csv`
-- `ablation_MIMIC_IV.csv`
-- `predictions_MIMIC_IV.pkl`
-- `checkpoint_temp_MIMIC-IV.pkl`
-
-The checkpoint is required by Part 1B, Part 2, and Part 3.
-
-### 3. Run MIMIC-IV Robustness and Clinical Utility
-
-Run this after Part 1:
-
-```powershell
-python JUCO_Part1B_Robustness.py
-```
-
-This script reuses the frozen MIMIC-IV parameters from
-`results/checkpoint_mimic.pkl`; it does not repeat the DE search.
-
-It performs:
-
-- JUCO-XGB full 5-fold evaluation
-- MNAR missingness stress test from 10% to 70%
-- Decision Curve Analysis using saved fold predictions
-
-Main outputs in `results/`:
-
-- `results_JUCO_XGB_MIMIC_IV.csv`
-- `missingness_stress_MIMIC_IV.csv`
-- `dca_MIMIC_IV.csv`
-- `checkpoint_mimic_robustness.pkl`
-
-### 4. Run eICU External Validation
-
-Run this after Part 1:
-
-```powershell
-python JUCO_Part2_eICU.py
-```
-
-This script loads the frozen parameters from MIMIC-IV and applies them to eICU.
-No Differential Evolution search is performed on eICU when
-`checkpoint_mimic.pkl` is available. This avoids information leakage and keeps
-the external validation protocol clean.
-
-The eICU experiment saves progress after every fold, so a stopped run can resume
-from the last completed fold.
-
-Main outputs in `results/`:
-
-- `checkpoint_eicu.pkl`
-- `results_eICU.csv`
-- `predictions_eICU.pkl`
-- `dca_eICU.csv`
-- `eicu_exp_progress.pkl` while the run is in progress
-
-After successful completion, the progress file is removed automatically.
-
-### 5. Aggregate Tables, Statistics, and Figures
-
-Run after Parts 1, 1B, and 2:
-
-```powershell
-python JUCO_Part3_Aggregate.py
-```
-
-This is pure post-processing. It does not train models.
-
-Required inputs in `results/`:
-
-- `results_MIMIC_IV.csv`
-- `results_eICU.csv`
-
-Optional inputs used when available:
-
-- `results_JUCO_XGB_MIMIC_IV.csv`
-- `ablation_MIMIC_IV.csv`
-- `missingness_stress_MIMIC_IV.csv`
-- `dca_MIMIC_IV.csv`
-- `dca_eICU.csv`
-- `checkpoint_mimic.pkl`
-- `checkpoint_eicu.pkl`
-
-Main outputs in `results/`:
-
-- `aggregate_results.csv`
-- `statistical_tests.csv`
-- `metric_comparison.png` and `metric_comparison.pdf`
-- `ablation_study.png` and `ablation_study.pdf`
-- `fig_missingness.png` and `fig_missingness.pdf`
-- `fig_dca.png` and `fig_dca.pdf`
-
-## Standalone Figure Generation
-
-To regenerate the paper-style architecture and summary figures:
-
-```powershell
-python generate_figures.py
-```
-
-The script reads CSV files from `results/` and writes figures in the repository
-root, including `Figure_1.pdf` through `Figure_6.pdf` and `Figure_A1.pdf`.
-
-If Part 3 already produced `results/fig_calibration.pdf`, use that calibration
-figure instead of the fallback `Figure_A1.pdf`.
-
-## Manuscript Compilation
-
-Compile the Elsevier CAS manuscript with:
-
-```powershell
-pdflatex juco_main.tex
-bibtex juco_main
-pdflatex juco_main.tex
-pdflatex juco_main.tex
-```
-
-Important manuscript files:
-
-- `juco_main.tex`
-- `references.bib`
-- `cas-sc.cls`
-- `cas-common.sty`
-- `cas-model2-names.bst`
-- `Figure*.pdf`
-
-Generated LaTeX files such as `.aux`, `.log`, `.bbl`, `.out`, and
-`.synctex.gz` are ignored by Git.
-
-## Output and Git Policy
-
-Tracked files should include source code, manuscript files, small result CSVs,
-and publication-ready figures.
-
-Ignored files include:
-
-- raw MIMIC-IV and eICU data
-- `.venv/`
-- Python caches
-- LaTeX build artifacts
-- large checkpoints and prediction pickles
-- temporary logs
-- local scratch folder `New folder/`
-
-Before pushing, check the repo state:
-
-```powershell
-git status --short --ignored
-```
-
-Only source files and small outputs should appear as tracked or staged files.
-
-## Troubleshooting
-
-`FileNotFoundError` for MIMIC-IV or eICU:
-Check that the files match the exact layout in the Data Requirements section.
-Then run `python inspect_files.py`.
-
-`WARNING: pytorch_tabnet not installed`:
-Install dependencies with `pip install -r requirements.txt`. If you do not need
-the TabNet baseline, the warning is safe and the rest of the pipeline can run.
-
-Out-of-memory or very slow runs:
-Reduce `cfg.forest_workers`, `cfg.de_workers`, `cfg.n_trees`, and
-`cfg.run_folds` for local testing. Use the original values for final results.
-
-Interrupted eICU run:
-Run `python JUCO_Part2_eICU.py` again. It should resume from
-`results/eicu_exp_progress.pkl`.
-
-Part 3 skips a figure:
-That figure depends on an optional CSV. Run the corresponding earlier script,
-for example Part 1B for robustness and DCA files.
-
-## GitHub Push
-
-After creating a GitHub repository, connect it and push:
-
-```powershell
-git remote add origin https://github.com/<user>/<repo>.git
-git push -u origin main
-```
+MIT, see `LICENSE`. The licence covers the code only; the datasets keep their own PhysioNet terms.

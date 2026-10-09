@@ -4,7 +4,6 @@ matplotlib
 numba
 numpy
 pandas
-pytest
 pytorch-tabnet
 scikit-learn
 scipy

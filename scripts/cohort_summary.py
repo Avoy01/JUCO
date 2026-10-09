@@ -170,7 +170,7 @@ def main() -> None:
     project_root = Path(__file__).resolve().parent.parent
     summarize_eicu(project_root)
     summarize_mimic(project_root)
-    print("\nPaste these numbers into Table A.3 of juco_main.tex.")
+    print("\nPaste these numbers into the cohort-characteristics appendix table of the manuscript.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated manuscript."
+title: "JUCO: Joint Uncertainty-Calibrated Optimisation for ICU Mortality Prediction with Safe Abstention Under Informative Missingness"
+type: software
+authors:
+  - family-names: Chowdhury
+    given-names: Avoy Nath
+    orcid: "https://orcid.org/0009-0007-6878-3741"
+  - family-names: Kumari
+    given-names: Anisha
+    orcid: "https://orcid.org/0000-0002-3054-3634"
+  - family-names: Tripathi
+    given-names: Prasun C
+repository-code: "https://github.com/Avoy01/JUCO"
+license: MIT
